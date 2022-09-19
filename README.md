@@ -95,7 +95,7 @@ Posibles respuestas
 ##### Mostrar usuario
 
 ```http
-GET /api/v1/user
+GET /api/v1/user?userId=userId
 ```
 Posibles respuestas
 
@@ -224,7 +224,7 @@ Posibles respuestas
 ##### Mostrar libro
 
 ```http
-GET /api/v1/book
+GET /api/v1/book?name=name&author=author
 ```
 Posibles respuestas
 
@@ -256,11 +256,14 @@ Posibles respuestas
 POST /api/v1/checkout/buy
 
 {
-"userId": "Example",
-"checkout":[{
-"bookId": "Example"
-"ammount": "1"
-}]}
+  "userId": "Example"
+  "checkout":[{
+      "bookId": "Example"
+      "ammount": "1"
+  }],
+  "totalPrice"="123,
+  "date"="01/01/2001"
+}
 
 ```
 Posibles respuestas
@@ -304,7 +307,7 @@ Posibles respuestas
 ##### Mostrar compra
 
 ```http
-GET /api/v1/book
+GET /api/v1/book?userId=userId&bookId=bookId&date=date
 ```
 Posibles respuestas
 
@@ -313,11 +316,13 @@ Posibles respuestas
 ```json
 {
 "checkouts":[{
+  "userId": "Example"
   "checkout":[{
-      "userId": "Example"
       "bookId": "Example"
       "ammount": "1"
-  }]
+  }],
+  "totalPrice"="123,
+  "date"="01/01/2001"
 }]
 }
 ```
