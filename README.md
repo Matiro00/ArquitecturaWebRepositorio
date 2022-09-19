@@ -261,8 +261,8 @@ POST /api/v1/checkout/buy
       "bookId": "Example"
       "ammount": "1"
   }],
-  "totalPrice"=123,
-  "date"="01/01/2001"
+  "totalPrice": 123,
+  "date": "01/01/2001"
 }
 
 ```
@@ -321,8 +321,8 @@ Posibles respuestas
       "bookId": "Example"
       "ammount": "1"
   }],
-  "totalPrice"=123,
-  "date"="01/01/2001"
+  "totalPrice": 123,
+  "date": "01/01/2001"
 }]
 }
 ```
