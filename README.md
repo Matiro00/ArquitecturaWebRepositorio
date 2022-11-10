@@ -22,7 +22,6 @@ POST /api/v1/user
 "name": "Example"
 "email": "example@whatever.com"
 "password": "examplePassword"
-"birthday": "01/01/2000"
 }
 
 ```
@@ -49,7 +48,6 @@ PUT /api/v1/user
 "name": "Example"
 "email": "example@whatever.com"
 "password": "examplePassword"
-"birthday": "01/01/2000"
 }
 
 ```
@@ -108,7 +106,6 @@ Posibles respuestas
     "name": "Example"
     "email": "example@whatever.com"
     "password": "examplePassword"
-    "birthday": "01/01/2000"
   }]
 }
 ```
