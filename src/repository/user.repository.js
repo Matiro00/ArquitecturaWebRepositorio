@@ -58,6 +58,25 @@ const getUserById = async function(id){
     });
 }
 
+const getUserByName = async function(name){
+    return new Promise ((resolve,reject) =>{
+        try{
+            connection.execute('SELECT * FROM users WHERE name = ?',
+            [name],
+            function(err,result){
+                if(err){
+                    return reject(err);
+                }
+
+                return resolve(result);
+            });
+        }
+        catch(err){
+            reject(err)
+        }
+    });
+}
+
 const modifyUser = async function(user){
     return new Promise ((resolve,reject) =>{
         try{
@@ -99,7 +118,7 @@ const deleteUser = async function(id){
 const login = async function(user){
     return new Promise ((resolve,reject) =>{
         try{
-            connection.execute('SELECT * FROM users WHERE username = ? AND password = ?',
+            connection.execute('SELECT * FROM users WHERE name = ? AND password = ?',
             [user.name, user.password],
             function(err,result){
                 if(err){
@@ -119,6 +138,7 @@ module.exports = {
     createUser,
     getUser,
     getUserById,
+    getUserByName,
     modifyUser,
     deleteUser,
     login

@@ -1,12 +1,19 @@
 const userRepository = require('../repository/user.repository.js');
+const User = require('../model/user.js');
 
 const createUser = async function(user){
-    const userCreated = await userRepository.createUser(user);
-    const respuesta = {
-        mensaje: 'Se creo el usuario con exito',
-        url: 'http://localhost:3000/user/'+userCreated.insertId
+    const userAlreadyRegistred = await userRepository.getUserByName(user.name);
+    if(userAlreadyRegistred.length == 0){
+        const userCreated = await userRepository.createUser(user);
+        const respuesta = {
+            mensaje: 'Se creo el usuario con exito',
+            url: 'http://localhost:3000/user/'+userCreated.insertId
+        }
+        return respuesta;
     }
-    return respuesta;
+    else{
+        throw new Error('Ya existe un usuario con ese nombre');
+    }
 }
 
 const getUser = async function(){
@@ -50,8 +57,15 @@ const deleteUser = async function(id){
         throw new Error('Usuario no encontrado');
     }
 }
-const login = async function(user){
-    return await userRepository.login(user);
+const login = async function(req){
+    const user = new User(null,req.body.name,null,req.body.password);
+    const userLogged =  await userRepository.login(user);
+    if(userLogged.length != 0){
+        req.session.userLogged = userLogged[0].id;
+    }
+    else{
+        throw new Error('Error de login: Nombre o contraseña incorrectos');
+    }
 }
 module.exports = {
     createUser,

@@ -9,7 +9,7 @@ const createBook = async function(book){
     return respuesta;
 }
 const getBook = async function(){
-    const books = await bookRepository.getBookById(id);
+    const books = await bookRepository.getBook();
     if(books.length != 0){
         return books;
     }
