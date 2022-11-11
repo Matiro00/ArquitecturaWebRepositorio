@@ -2,10 +2,10 @@ const express = require('express');
 const userRoot = require('./src/routes/user.roots.js');
 const bookRoot = require('./src/routes/book.roots.js');
 const checkoutRoot = require('./src/routes/checkout.roots.js');
-
+const bodyParser = require('body-parser')
 const app = express();
 
-
+app.use(express.json());
 app.use(userRoot);
 app.use(bookRoot);
 app.use(checkoutRoot);

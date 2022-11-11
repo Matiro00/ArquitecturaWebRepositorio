@@ -17,7 +17,11 @@
   },
   "homepage": "https://github.com/Matiro00/ArquitecturaWebRepositorio#readme",
   "dependencies": {
+    "body-parser": "^1.20.1",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
     "nodemon": "^2.0.20"
   },
   "devDependencies": {

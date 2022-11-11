@@ -1,20 +1,58 @@
-const createBook = function(req,res, next){
-    return '200'
+const bookRepository = require('../repository/book.repository.js');
+
+const createBook = async function(book){
+    const bookCreated = await bookRepository.createBook(book);
+    const respuesta = {
+        mensaje: 'Se creo el libro con exito',
+        url: 'http://localhost:3000/book/'+bookCreated.insertId
+    }
+    return respuesta;
 }
-const getBook = function(req,res, next){
-    return '200'
+const getBook = async function(){
+    const books = await bookRepository.getBookById(id);
+    if(books.length != 0){
+        return books;
+    }
+    else{
+        throw new Error('Libro no encontrado');
+    }
 }
-const getBookById = function(req,res, next){
-    return '200'
+const getBookById = async function(id){
+    const book = await bookRepository.getBookById(id);
+    if(book.length != 0){
+        return book;
+    }
+    else{
+        throw new Error('Libro no encontrado');
+    }
 }
-const modifyBook = function(req,res, next){
-    return '200'
+const modifyBook = async function(book){
+    const books = await bookRepository.getBookById(book.id);
+    if(books.length != 0){
+        await bookRepository.modifyBook(book);
+        const respuesta = {
+            mensaje: 'Se modifico el usuario con exito',
+            libro: book
+        }
+        return respuesta;
+    }
+    else{
+        throw new Error('Libro no encontrado');
+    }
 }
-const modifyPartiallyBook = function(req,res, next){
-    return '200'
-}
-const deleteBook = function(req,res, next){
-    return '200'
+const deleteBook = async function(id){
+    const book = await bookRepository.getBookById(id);
+    if(book.length != 0){
+        await bookRepository.deleteBook(id);
+        const respuesta = {
+            mensaje: 'Se elimino el usuario con exito',
+            libro: book
+        }
+        return respuesta;
+    }
+    else{
+        throw new Error('Libro no encontrado');
+    }
 }
 
 module.exports = {
@@ -22,6 +60,5 @@ module.exports = {
     getBook,
     getBookById,
     modifyBook,
-    modifyPartiallyBook,
     deleteBook
 }

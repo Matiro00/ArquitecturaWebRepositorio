@@ -8,8 +8,9 @@ const userById = user+'/:id';
 router.get(user,userController.getUser);
 router.get(userById,userController.getUserById);
 router.post(user,(userController.createUser));
+router.post(user,(userController.login));
 router.put(userById,userController.modifyUser);
-router.patch(userById,userController.modifyPartiallyUser);
 router.delete(userById,userController.deleteUser);
+
 
 module.exports = router;
