@@ -5,5 +5,6 @@ module.exports = class Book {
         this.author = author;
         this.price = price;
         this.isForSale = isForSale;
+        this.amount = amount;
     }
 }

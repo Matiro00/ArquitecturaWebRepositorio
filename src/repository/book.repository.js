@@ -5,8 +5,8 @@ const connection = database.DB;
 const createBook = async function(book){
     return new Promise ((resolve,reject) =>{
         try{
-            connection.execute('INSERT INTO books(id, name, author, price, isForSale) VALUES (null,?,?,?,?);', 
-            [book.name, book.author, book.price,book.isForSale],
+            connection.execute('INSERT INTO books(id, name, author, price, isForSale, amount) VALUES (null,?,?,?,?,?);', 
+            [book.name, book.author, book.price,book.isForSale,book.amount],
             function(err,result){
                 if(err){
                     return reject(err);
@@ -48,7 +48,6 @@ const getBookById = async function(id){
                 if(err){
                     return reject(err);
                 }
-
                 return resolve(result);
             });
         }
@@ -58,11 +57,11 @@ const getBookById = async function(id){
     });
 }
 
-const modifyBook = async function(book){
+const getBookByName = async function(name){
     return new Promise ((resolve,reject) =>{
         try{
-            connection.execute('UPDATE books SET name = ?, author = ?, price = ?, isForSale = ?',
-            [book.name, book.author, book.price,book.isForSale],
+            connection.execute('SELECT * FROM books WHERE name = ?',
+            [name],
             function(err,result){
                 if(err){
                     return reject(err);
@@ -76,6 +75,44 @@ const modifyBook = async function(book){
         }
     });
 }
+
+const modifyBook = async function(book){
+    return new Promise ((resolve,reject) =>{
+        try{
+            connection.execute('UPDATE books SET name = ?, author = ?, price = ?, isForSale = ?, amount = ?',
+            [book.name, book.author, book.price,book.isForSale,book.amount],
+            function(err,result){
+                if(err){
+                    return reject(err);
+                }
+
+                return resolve(result);
+            });
+        }
+        catch(err){
+            reject(err)
+        }
+    });
+}
+
+const reduceAmount = async function(book){
+    return new Promise ((resolve,reject) =>{
+        try{
+            connection.execute('UPDATE books SET amount = amount-1',
+            function(err,result){
+                if(err){
+                    return reject(err);
+                }
+
+                return resolve(result);
+            });
+        }
+        catch(err){
+            reject(err)
+        }
+    });
+}
+
 
 
 const deleteBook = async function(id){
@@ -101,6 +138,8 @@ module.exports = {
     createBook,
     getBook,
     getBookById,
+    getBookByName,
     modifyBook,
-    deleteBook
+    deleteBook,
+    reduceAmount
 }

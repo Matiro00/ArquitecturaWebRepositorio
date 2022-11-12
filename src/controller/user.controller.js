@@ -53,7 +53,11 @@ const deleteUser = async function(req,res, next){
     if(req.session.userLogged){
         console.log('Controller level: Procesando la eliminacion del usuario');
         try{
-            res.status(200).json(await userService.deleteUser(req.params.id));
+            const mensaje = await userService.deleteUser(req.params.id);
+            if(req.session.userLogged == req.params.id){
+                req.session.destroy();
+            }
+            res.status(200).json(mensaje);
         }
         catch(err){
             res.status(404).json({mensaje: err.message});
@@ -86,7 +90,6 @@ const logout = async function(req,res, next){
     }
     res.status(200).json();
 }
-
 module.exports = {
     createUser,
     getUser,
@@ -94,5 +97,5 @@ module.exports = {
     modifyUser,
     deleteUser,
     login,
-    logout
+    logout,
 }

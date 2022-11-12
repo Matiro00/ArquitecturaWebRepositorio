@@ -3,9 +3,14 @@ const bookService = require('../service/book.service.js');
 
 const createBook = async function(req,res, next){
     if(req.session.userLogged){
-        console.log('Controller level: Procesando la creacion de libro');
-        const book = new Book(null,req.body.name,req.body.author,req.body.price,req.body.isForSale)
-        return res.status(201).json(await bookService.createBook(book));
+        try{
+            console.log('Controller level: Procesando la creacion de libro');
+            const book = new Book(null,req.body.name,req.body.author,req.body.price,req.body.isForSale,req.body.amount);
+            return res.status(201).json(await bookService.createBook(book));
+        }
+        catch(err){
+            res.status(404).json({mensaje: err.message});
+        }
     }
     else{
         res.status(401).json({mensaje: 'Se necesita loggearse'});

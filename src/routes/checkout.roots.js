@@ -9,7 +9,6 @@ router.get(checkout,checkoutController.getCheckout);
 router.get(checkoutById,checkoutController.getCheckoutById);
 router.post(checkout,checkoutController.createCheckout);
 router.put(checkoutById,checkoutController.modifyCheckout);
-router.patch(checkoutById,checkoutController.modifyPartiallyCheckout);
 router.delete(checkoutById,checkoutController.deleteCheckout);
 
 module.exports = router;
