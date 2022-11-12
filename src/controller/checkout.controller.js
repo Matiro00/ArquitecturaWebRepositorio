@@ -1,6 +1,8 @@
 const Checkout = require('../model/checkout.js');
 const checkoutService = require('../service/checkout.service.js');
-
+const DeactivatedEntity = require('../errors/deactivatedEntity.error.js');
+const NotFoundError = require('../errors/notFound.error.js');
+const OutOfStockError = require('../errors/outOfStock.error.js');
 const createCheckout = async function(req,res, next){
     if(req.session.userLogged){
         try{
@@ -9,7 +11,15 @@ const createCheckout = async function(req,res, next){
             return res.send(await checkoutService.createCheckout(checkout));
         }
         catch(err){
-            res.status(404).json({mensaje: err.message});
+            if(err instanceof DeactivatedEntity || err instanceof OutOfStockError){
+                res.status(400).json({mensaje: err.message});
+            }
+            else if(err instanceof NotFoundError){
+                res.status(404).json({mensaje: err.message});
+            }
+            else{
+                res.status(500).json({mensaje: err.message});
+            }
         }
     }
     else{
@@ -47,7 +57,15 @@ const modifyCheckout = async function(req,res, next){
             return res.send(await checkoutService.modifyCheckout(checkout));
         }
         catch(err){
-            res.status(404).json({mensaje: err.message});
+            if(err instanceof DeactivatedEntity){
+                res.status(400).json({mensaje: err.message});
+            }
+            else if(err instanceof NotFoundError){
+                res.status(404).json({mensaje: err.message});
+            }
+            else{
+                res.status(500).json({mensaje: err.message});
+            }
         }
     }
     else{
@@ -62,7 +80,12 @@ const deleteCheckout = async function(req,res, next){
             return res.send(await checkoutService.deleteCheckout(req.params.id));
         }
         catch(err){
-            res.status(404).json({mensaje: err.message});
+            if(err instanceof NotFoundError){
+                res.status(404).json({mensaje: err.message});
+            }
+            else{
+                res.status(500).json({mensaje: err.message});
+            }
         }    
     }
     else{

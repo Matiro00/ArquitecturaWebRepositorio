@@ -2,11 +2,11 @@ const database = require('../db/db.js');
 
 const connection = database.DB;
 
-const createCheckoutItem = async function(idBook, idCheckout){
+const createCheckoutItem = async function(idBook, idCheckout,amount){
     return new Promise ((resolve,reject) =>{
         try{
-            connection.execute('INSERT INTO checkout_items(id, id_book, id_checkout) VALUES (null,?,?);', 
-            [idBook, idCheckout],
+            connection.execute('INSERT INTO checkout_items(id, id_book, id_checkout,amount) VALUES (null,?,?,?);', 
+            [idBook, idCheckout,amount],
             function(err,result){
                 if(err){
                     return reject(err);

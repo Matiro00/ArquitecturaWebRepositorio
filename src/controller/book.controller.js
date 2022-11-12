@@ -1,5 +1,8 @@
 const Book = require('../model/book.js');
 const bookService = require('../service/book.service.js');
+const AlreadyCreatedEntity = require('../errors/alreadyCreatedEntity.error.js');
+const DeactivatedEntity = require('../errors/deactivatedEntity.error.js');
+const NotFoundError = require('../errors/notFound.error.js');
 
 const createBook = async function(req,res, next){
     if(req.session.userLogged){
@@ -9,10 +12,16 @@ const createBook = async function(req,res, next){
             return res.status(201).json(await bookService.createBook(book));
         }
         catch(err){
-            res.status(404).json({mensaje: err.message});
+            if(err instanceof AlreadyCreatedEntity){
+                res.status(400).json({mensaje: err.message});
+            }
+            else{
+                res.status(500).json({mensaje: err.message});
+            }
         }
     }
     else{
+        
         res.status(401).json({mensaje: 'Se necesita loggearse'});
     }
 }
@@ -34,7 +43,12 @@ const getBookById = async function(req,res, next){
             res.status(200).json(await bookService.getBookById(req.params.id));
         }
         catch(err){
-            res.status(404).json({mensaje: err.message});
+            if(err instanceof NotFoundError){
+                res.status(404).json({mensaje: err.message});
+            }
+            else{
+                res.status(500).json({mensaje: err.message});
+            }
         }
     }
     else{
@@ -50,7 +64,12 @@ const modifyBook = async function(req,res, next){
             res.status(200).json(await bookService.modifyBook(book));
         }
         catch(err){
-            res.status(404).json({mensaje: err.message});
+            if(err instanceof NotFoundError){
+                res.status(404).json({mensaje: err.message});
+            }
+            else{
+                res.status(500).json({mensaje: err.message});
+            }
         }    
     }
     else{
@@ -65,7 +84,12 @@ const deleteBook = async function(req,res, next){
             res.status(200).json(await bookService.deleteBook(req.params.id));
         }
         catch(err){
-            res.status(404).json({mensaje: err.message});
+            if(err instanceof NotFoundError){
+                res.status(404).json({mensaje: err.message});
+            }
+            else{
+                res.status(500).json({mensaje: err.message});
+            }
         }
     }
     else{

@@ -80,8 +80,8 @@ const getUserByName = async function(name){
 const modifyUser = async function(user){
     return new Promise ((resolve,reject) =>{
         try{
-            connection.execute('UPDATE users SET name = ?, email = ?, password = ?, isActive = ?',
-            [user.name, user.email, user.password,user.isActive],
+            connection.execute('UPDATE users SET name = ?, email = ?, password = ?, isActive = ? WHERE id = ?',
+            [user.name, user.email, user.password,user.isActive,user.id],
             function(err,result){
                 if(err){
                     return reject(err);
@@ -96,10 +96,11 @@ const modifyUser = async function(user){
     });
 }
 
-const deactivateUser = async function(user){
+const deactivateUser = async function(id){
     return new Promise ((resolve,reject) =>{
         try{
-            connection.execute('UPDATE users SET isActive = false',
+            connection.execute('UPDATE users SET isActive = false WHERE id = ?',
+            [id],
             function(err,result){
                 if(err){
                     return reject(err);

@@ -78,12 +78,29 @@ const getCheckoutByUserId = async function(id){
         }
     });
 }
+const getCheckoutByBookId = async function(id){
+    return new Promise ((resolve,reject) =>{
+        try{
+            connection.execute('SELECT * FROM checkout_items WHERE id_book = ?',
+            [id],
+            function(err,result){
+                if(err){
+                    return reject(err);
+                }
 
+                return resolve(result);
+            });
+        }
+        catch(err){
+            reject(err)
+        }
+    });
+}
 const modifyCheckout = async function(checkout){
     return new Promise ((resolve,reject) =>{
         try{
-            connection.execute('UPDATE checkouts SET id_user = ?, date = ?',
-            [checkout.idUser, checkout.date],
+            connection.execute('UPDATE checkouts SET id_user = ?, date = ? WHERE id = ?',
+            [checkout.idUser, checkout.date,checkout.id],
             function(err,result){
                 if(err){
                     return reject(err);
@@ -120,8 +137,9 @@ const deleteCheckout = async function(id){
 module.exports = {
     createCheckout,
     getCheckout,
-    getCheckoutByUserId,
     getCheckoutById,
+    getCheckoutByUserId,
+    getCheckoutByBookId,
     modifyCheckout,
     deleteCheckout
 }

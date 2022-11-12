@@ -1,5 +1,9 @@
 const userService = require('../service/user.service.js');
 const User = require('../model/user.js');
+const DeactivatedUserError = require('../errors/deactivatedEntity.error.js');
+const LoginError = require('../errors/login.error.js');
+const AlreadyCreatedEntity = require('../errors/alreadyCreatedEntity.error.js');
+const NotFoundError = require('../errors/notFound.error.js');
 
 const createUser = async function(req,res, next){
     try{
@@ -8,7 +12,12 @@ const createUser = async function(req,res, next){
         res.status(201).json(await userService.createUser(user));
     }
     catch(err){
-        res.status(400).json({mensaje: err.message});
+        if(err instanceof AlreadyCreatedEntity){
+            res.status(400).json({mensaje: err.message});
+        }
+        else{
+            res.status(500).json({mensaje: err.message});
+        }
     }
 }
 const getUser = async function(req,res, next){
@@ -27,7 +36,12 @@ const getUserById = async function(req,res, next){
             res.status(200).json(await userService.getUserById(req.params.id));
         }
         catch(err){
-            res.status(404).json({mensaje: err.message});
+            if(err instanceof NotFoundError){
+                res.status(404).json({mensaje: err.message});
+            }
+            else{
+                res.status(500).json({mensaje: err.message});
+            }
         }
     }
     else{
@@ -38,11 +52,17 @@ const modifyUser = async function(req,res, next){
     if(req.session.userLogged){
         console.log('Controller level: Procesando la modificacion del usuario');
         const user = new User(req.params.id,req.body.name,req.body.email,req.body.password,req.body.isActive);
+        console.log(req.body.isActive)
         try{
             res.status(200).json(await userService.modifyUser(user));
         }
         catch(err){
-            res.status(404).json({mensaje: err.message});
+            if(err instanceof NotFoundError){
+                res.status(404).json({mensaje: err.message});
+            }
+            else{
+                res.status(500).json({mensaje: err.message});
+            }
         }
     }
     else{
@@ -60,9 +80,14 @@ const deleteUser = async function(req,res, next){
             res.status(200).json(mensaje);
         }
         catch(err){
-            res.status(404).json({mensaje: err.message});
+            if(err instanceof NotFoundError){
+                res.status(404).json({mensaje: err.message});
+            }
+            else{
+                res.status(500).json({mensaje: err.message});
+            }
         }
-        }
+    }
     else{
         res.status(401).json({mensaje: 'Se necesita loggearse'});
     }
@@ -73,8 +98,14 @@ const login = async function(req,res, next){
         await userService.login(req);
         res.status(200).json({mensaje: 'Se logeo con exito'});
     }
-    catch (err){
-        res.status(404).json({mensaje: err.message});
+    catch(err){
+        console.log(err)
+        if(err instanceof DeactivatedUserError || err instanceof LoginError){
+            res.status(400).json({mensaje: err.message});
+        }
+        else{
+            res.status(404).json({mensaje: err.message});
+        }
     }
     res.status(200).json();
 }
@@ -86,7 +117,7 @@ const logout = async function(req,res, next){
         res.status(200).json({mensaje: 'Se elimino la sesion con exito'});
     }
     catch (err){
-        res.status(404).json({mensaje: err.message});
+        res.status(500).json({mensaje: err.message});
     }
     res.status(200).json();
 }

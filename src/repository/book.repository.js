@@ -79,8 +79,8 @@ const getBookByName = async function(name){
 const modifyBook = async function(book){
     return new Promise ((resolve,reject) =>{
         try{
-            connection.execute('UPDATE books SET name = ?, author = ?, price = ?, isForSale = ?, amount = ?',
-            [book.name, book.author, book.price,book.isForSale,book.amount],
+            connection.execute('UPDATE books SET name = ?, author = ?, price = ?, isForSale = ?, amount = ? WHERE id = ?',
+            [book.name, book.author, book.price,book.isForSale,book.amount,book.id],
             function(err,result){
                 if(err){
                     return reject(err);
@@ -95,10 +95,11 @@ const modifyBook = async function(book){
     });
 }
 
-const reduceAmount = async function(book){
+const reduceAmount = async function(id, amount){
     return new Promise ((resolve,reject) =>{
         try{
-            connection.execute('UPDATE books SET amount = amount-1',
+            connection.execute('UPDATE books SET amount = amount - ? WHERE id = ?',
+            [amount,id],
             function(err,result){
                 if(err){
                     return reject(err);
@@ -134,6 +135,25 @@ const deleteBook = async function(id){
     });
 }
 
+const deactivateBook = async function(id){
+    return new Promise ((resolve,reject) =>{
+        try{
+            connection.execute('UPDATE books SET isForSale = 0 WHERE id = ?',
+            [id],
+            function(err,result){
+                if(err){
+                    return reject(err);
+                }
+
+                return resolve(result);
+            });
+        }
+        catch(err){
+            reject(err)
+        }
+    });
+}
+
 module.exports = {
     createBook,
     getBook,
@@ -141,5 +161,6 @@ module.exports = {
     getBookByName,
     modifyBook,
     deleteBook,
-    reduceAmount
+    reduceAmount,
+    deactivateBook
 }

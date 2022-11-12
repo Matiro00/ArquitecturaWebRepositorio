@@ -2,6 +2,11 @@ const userRepository = require('../repository/user.repository.js');
 const checkoutRepository = require('../repository/checkout.repository.js');
 const genericRepository = require('../repository/generic.repository');
 const User = require('../model/user.js');
+const DeactivatedUserError = require('../errors/deactivatedEntity.error.js');
+const NotFoundError = require('../errors/notFound.error.js');
+const AlreadyCreatedEntity = require('../errors/alreadyCreatedEntity.error.js');
+const LoginError = require('../errors/login.error.js');
+
 
 const createUser = async function(user){
     const userAlreadyRegistred = await userRepository.getUserByName(user.name);
@@ -15,7 +20,7 @@ const createUser = async function(user){
         return respuesta;
     }
     else{
-        throw new Error('Ya existe un usuario con ese nombre');
+        throw new AlreadyCreatedEntity('Ya existe un usuario con ese nombre');
     }
 }
 
@@ -35,21 +40,22 @@ const getUser = async function(){
 const getUserById = async function(id){
     const user = await userRepository.getUserById(id);
     if(user.length != 0){
-        if(user.isActive == 1){
-            user.isActive = true;
+        if(user[0].isActive == 1){
+            user[0].isActive = true;
         }
         else{
-            user.isActive = false;
+            user[0].isActive = false;
         }
         return user;
     }
     else{
-        throw new Error('Usuario no encontrado');
+        throw new NotFoundError('Usuario no encontrado');
     }
 }
 const modifyUser = async function(user){
     const users = await userRepository.getUserById(user.id);
     if(users.length != 0){
+        user.id= users[0].id;
         await userRepository.modifyUser(user);
         const respuesta = {
             mensaje: 'Se modifico el usuario con exito',
@@ -58,7 +64,7 @@ const modifyUser = async function(user){
         return respuesta;
     }
     else{
-        throw new Error('Usuario no encontrado');
+        throw new NotFoundError('Usuario no encontrado');
     }
 }
 const deleteUser = async function(id){
@@ -84,7 +90,7 @@ const deleteUser = async function(id){
         
     }
     else{
-        throw new Error('Usuario no encontrado');
+        throw new NotFoundError('Usuario no encontrado');
     }
 }
 const login = async function(req){
@@ -95,11 +101,11 @@ const login = async function(req){
             req.session.userLogged = userLogged[0].id;
         }
         else{
-            throw new Error('Error de login: El usuario esta desactivado');
+            throw new DeactivatedUserError('Error de login: El usuario esta desactivado');
         }
     }
     else{
-        throw new Error('Error de login: Nombre o contraseña incorrectos');
+        throw new LoginError('Error de login: Nombre o contraseña incorrectos');
     }
 }
 
