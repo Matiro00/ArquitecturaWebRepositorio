@@ -34,7 +34,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/user/14",
+							"raw": "http://localhost:3000/user/47",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -42,7 +42,7 @@
 							"port": "3000",
 							"path": [
 								"user",
-								"14"
+								"47"
 							]
 						}
 					},
@@ -83,7 +83,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"testEdited\",\r\n    \"email\":\"testEdited@gmail.com\",\r\n    \"password\":\"testEdited\",\r\n    \"isActive\": true\r\n}",
+							"raw": "{\r\n    \"name\":\"test123\",\r\n    \"email\":\"testEdited@gmail.com\",\r\n    \"password\":\"testEdit123\",\r\n    \"isActive\": true\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -91,7 +91,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/user/14",
+							"raw": "http://localhost:3000/user/47",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -99,27 +99,7 @@
 							"port": "3000",
 							"path": [
 								"user",
-								"14"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Modify Partially User",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/user/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"user",
-								"1"
+								"47"
 							]
 						}
 					},
@@ -131,7 +111,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/user/15",
+							"raw": "http://localhost:3000/user/46",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -139,7 +119,7 @@
 							"port": "3000",
 							"path": [
 								"user",
-								"15"
+								"46"
 							]
 						}
 					},
@@ -222,7 +202,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/book/31",
+							"raw": "http://localhost:3000/book/43",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -230,7 +210,7 @@
 							"port": "3000",
 							"path": [
 								"book",
-								"31"
+								"43"
 							]
 						}
 					},
@@ -243,7 +223,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"test\",\r\n    \"author\": \"testAuthor\",\r\n    \"price\": 1,\r\n    \"isForSale\": true\r\n}",
+							"raw": "{\r\n    \"name\": \"test\",\r\n    \"author\": \"testAuthor\",\r\n    \"price\": 1,\r\n    \"isForSale\": true,\r\n    \"amount\": 5\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -271,7 +251,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"bookEdited\",\r\n    \"author\": \"authorEdited\",\r\n    \"price\": 1,\r\n    \"isForSale\": true\r\n}",
+							"raw": "{\r\n    \"name\": \"bookEdited123\",\r\n    \"author\": \"authorEdited\",\r\n    \"price\": 1,\r\n    \"isForSale\": true,\r\n    \"amount\": 10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -279,7 +259,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/book/31",
+							"raw": "http://localhost:3000/book/43",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -287,27 +267,7 @@
 							"port": "3000",
 							"path": [
 								"book",
-								"31"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Modify Partially Book",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/book/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"book",
-								"1"
+								"43"
 							]
 						}
 					},
@@ -319,7 +279,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/book/31",
+							"raw": "http://localhost:3000/book/44",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -327,7 +287,7 @@
 							"port": "3000",
 							"path": [
 								"book",
-								"31"
+								"44"
 							]
 						}
 					},
@@ -358,12 +318,12 @@
 					"response": []
 				},
 				{
-					"name": "Find Checkout",
+					"name": "Find Checkout By Id",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/checkout/1",
+							"raw": "http://localhost:3000/checkout/41",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -371,7 +331,7 @@
 							"port": "3000",
 							"path": [
 								"checkout",
-								"1"
+								"41"
 							]
 						}
 					},
@@ -382,6 +342,15 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUser\": 46,\r\n    \"items\":[\r\n\r\n        {\r\n            \"id\":\"44\",\r\n            \"amount\": 1\r\n        }\r\n    ],\r\n    \"date\": \"2000/03/12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:3000/checkout",
 							"protocol": "http",
@@ -401,8 +370,17 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUser\":44,\r\n    \"date\": \"2001/09/12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:3000/checkout/1",
+							"raw": "http://localhost:3000/checkout/47",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -410,27 +388,7 @@
 							"port": "3000",
 							"path": [
 								"checkout",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Modify Partially Checkout",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/checkout/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"checkout",
-								"1"
+								"47"
 							]
 						}
 					},
@@ -442,7 +400,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/checkout/1",
+							"raw": "http://localhost:3000/checkout/41",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -450,7 +408,7 @@
 							"port": "3000",
 							"path": [
 								"checkout",
-								"1"
+								"41"
 							]
 						}
 					},
