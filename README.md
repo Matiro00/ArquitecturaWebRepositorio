@@ -16,12 +16,13 @@ La compra de libros esta limitada al stock que se tenga del mismo. El mismo no r
 ##### Crear usuario
 
 ```http
-POST /api/v1/user
+POST /user
 
 {
-"name": "Example"
-"email": "example@whatever.com"
-"password": "examplePassword"
+"name": "Example",
+"email": "example@whatever.com",
+"password": "examplePassword",
+"isActive":true
 }
 
 ```
@@ -30,24 +31,37 @@ Posibles respuestas
 - `200 OK `
 ```json
 {
-  "message": "Usuario dado de alta"
+    "mensaje": "Se creo el usuario con exito",
+    "url": "http://localhost:3000/user/id"
 }
 ```
 
 - `400 Bad Request `
 
-Depende de cual validacion rompio.
+AlreadyCreatedEntity: Si se ingresa un usuario con un mismo nombre
+```json
+{
+    "mensaje": "Ya existe un usuario con ese nombre"
+}
+```
 
+- `500 Internal server error `
+```json
+{
+  "mensaje": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
+}
+```
 
 ##### Editar usuario
 
 ```http
-PUT /api/v1/user
+PUT /user/id
 
 {
-"name": "Example"
-"email": "example@whatever.com"
-"password": "examplePassword"
+"name": "Example",
+"email": "example@whatever.com",
+"password": "examplePassword",
+"isActive":true
 }
 
 ```
@@ -56,19 +70,44 @@ Posibles respuestas
 - `200 OK `
 ```json
 {
-  "message": "Usuario se edito con exito"
+    "mensaje": "Se modifico el usuario con exito",
+    "usuario": {
+        "id": 48,
+        "name": "test34",
+        "email": "testEdited@gmail.com",
+        "password": "testEdit123",
+        "isActive": true
+    }
 }
 ```
 
-- `400 Bad Request `
+- `404 Bad Request `
 
-Depende de cual validacion rompio.
+NotFoundError: El id del usuario que se quiere editar no existe
+```json
+{
+    "mensaje": "Usuario no encontrado"
+}
+```
+AlreadyCreatedEntity: Si se ingresa un usuario con un mismo nombre
+```json
+{
+    "mensaje": "Ya existe un usuario con ese nombre"
+}
+```
+
+- `500 Internal server error `
+```json
+{
+  "mensaje": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
+}
+```
 
 
 ##### Eliminar usuario
 
 ```http
-DELETE /api/v1/user?id=userId
+DELETE /user/id
 
 
 ```
@@ -77,7 +116,16 @@ Posibles respuestas
 - `200 OK `
 ```json
 {
-  "message": "Usuario eliminado"
+    "mensaje": "Se elimino el usuario con exito",
+    "usuario": [
+        {
+            "id": 49,
+            "name": "test123",
+            "email": "test@gmail.com",
+            "password": "test123",
+            "isActive": 1
+        }
+    ]
 }
 ```
 
@@ -85,7 +133,14 @@ Posibles respuestas
 
 ```json
 {
-  "message": "El id del usuario que quiere eliminar no existe"
+  "mensaje": "Usuario no encontrado"
+}
+```
+
+- `500 Internal server error `
+```json
+{
+  "mensaje": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
 }
 ```
 
@@ -93,21 +148,68 @@ Posibles respuestas
 ##### Mostrar usuario
 
 ```http
-GET /api/v1/user?userId=userId
+GET /user
 ```
 Posibles respuestas
 
 - `200 OK `
 
 ```json
+[
+    {
+        "id": 48,
+        "name": "testqw",
+        "email": "testEdited@gmail.com",
+        "password": "testEdit123",
+        "isActive": true
+    },
+    {
+        "id": 50,
+        "name": "test",
+        "email": "test@gmail.com",
+        "password": "test123",
+        "isActive": true
+    }
+]
+
+
+```
+- `500 Internal server error `
+```json
 {
-"users": [
-  {
-    "name": "Example"
-    "email": "example@whatever.com"
-    "password": "examplePassword"
-  }]
+  "message": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
 }
+```
+
+##### Mostrar usuario por id
+
+```http
+GET /user/id
+```
+Posibles respuestas
+
+- `200 OK `
+
+```json
+[
+    {
+        "id": 48,
+        "name": "testqw",
+        "email": "testEdited@gmail.com",
+        "password": "testEdit123",
+        "isActive": true
+    }
+]
+
+```
+- `404 Not Found `
+
+```json
+{
+  "mensaje": "Usuario no encontrado"
+}
+```
+
 ```
 - `500 Internal server error `
 ```json
@@ -119,10 +221,10 @@ Posibles respuestas
 ##### Login
 
 ```http
-POST /api/v1/login
+POST /login
 
 {
-"email": "example@whatever.com"
+"name": "example",
 "password": "examplePassword"
 }
 
@@ -130,29 +232,51 @@ POST /api/v1/login
 - `200 OK `
 ```json
 {
-  "message": "Logeado con exito"
+    "mensaje": "Se logeo con exito"
 }
 ```
 
-- `401 Unauthorized `
+- `500 Internal server error `
+
 ```json
 {
-  "message": "Email o contraseña incorrectas"
+  "message": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
 }
 ```
 
+##### Logout
+
+```http
+POST /logout
+
+```
+- `200 OK `
+```json
+{
+    "mensaje": "Se elimino la sesion con exito"
+}
+```
+
+- `500 Internal server error `
+```json
+{
+  "message": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
+}
+```
 
 #### Libros 📚
 
 ##### Crear libro
 
 ```http
-POST /api/v1/book
+POST /book
 
 {
-"name": "Example"
-"author": "Example"
-"price": "examplePassword"
+    "name": "test",
+    "author": "testAuthor",
+    "price": 1,
+    "isForSale": true,
+    "amount": 5
 }
 
 ```
@@ -161,23 +285,38 @@ Posibles respuestas
 - `200 OK `
 ```json
 {
-  "message": "Libro dado de alta"
+    "mensaje": "Se creo el libro con exito",
+    "url": "http://localhost:3000/user/id"
 }
 ```
 
-- `400 Bad Request `
+- `404 Bad Request `
 
-Depende de cual validacion rompio.
+AlreadyCreatedEntity: Si se ingresa un usuario con un mismo nombre
+```json
+{
+    "mensaje": "Ya existe un libro con ese nombre"
+}
+```
+
+- `500 Internal server error `
+```json
+{
+  "message": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
+}
+```
 
 ##### Editar libro
 
 ```http
-PUT /api/v1/book
+PUT /api/v1/book/id
 
 {
-"name": "Example"
-"author": "Example"
-"price": "examplePassword"
+    "name": "bookEdited123",
+    "author": "authorEdited",
+    "price": 1,
+    "isForSale": true,
+    "amount": 10
 }
 
 ```
@@ -186,19 +325,36 @@ Posibles respuestas
 - `200 OK `
 ```json
 {
-  "message": "Libro se edito con exito"
+    "mensaje": "Se modifico el libro con exito",
+    "libro": {
+        "id": 45,
+        "name": "bookEdited123",
+        "author": "authorEdited",
+        "price": 1,
+        "isForSale": true,
+        "amount": 10
+    }
 }
 ```
 
 - `400 Bad Request `
+```json
+{
+    "mensaje": "Ya existe un libro con ese nombre"
+}
+```
 
-Depende de cual validacion rompio.
-
+- `404 Not Found `
+```json
+{
+    "mensaje": "Libro no encontrado"
+}
+```
 
 ##### Eliminar libro
 
 ```http
-DELETE /api/v1/book?id=bookId
+DELETE /book/id
 
 
 ```
@@ -207,7 +363,17 @@ Posibles respuestas
 - `200 OK `
 ```json
 {
-  "message": "Libro eliminado"
+    "mensaje": "Se elimino el libro con exito",
+    "libro": [
+        {
+            "id": 45,
+            "name": "bookEdited123",
+            "author": "authorEdited",
+            "price": 1,
+            "isForSale": 1,
+            "amount": 10
+        }
+    ]
 }
 ```
 
@@ -221,21 +387,52 @@ Posibles respuestas
 ##### Mostrar libro
 
 ```http
-GET /api/v1/book?name=name&author=author
+GET /book
 ```
 Posibles respuestas
 
 - `200 OK `
 
 ```json
+[
+    {
+        "id": 45,
+        "name": "bookEdited123",
+        "author": "authorEdited",
+        "price": 1,
+        "isForSale": true,
+        "amount": 10
+    }
+]
+```
+
+- `500 Internal server error `
+```json
 {
-"books": [
-  {
-    "name": "Example"
-    "author": "Example"
-    "price": "examplePrice"
-  }]
+  "message": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
 }
+```
+
+##### Mostrar libro por id
+
+```http
+GET /book/id
+```
+Posibles respuestas
+
+- `200 OK `
+
+```json
+[
+    {
+        "id": 45,
+        "name": "bookEdited123",
+        "author": "authorEdited",
+        "price": 1,
+        "isForSale": true,
+        "amount": 10
+    }
+]
 ```
 
 - `500 Internal server error `
@@ -250,16 +447,17 @@ Posibles respuestas
 ##### Crear compra
 
 ```http
-POST /api/v1/checkout/buy
+POST /checkout
 
 {
-  "userId": "Example"
-  "checkout":[{
-      "bookId": "Example"
-      "ammount": "1"
-  }],
-  "totalPrice": 123,
-  "date": "01/01/2001"
+    "idUser": 48,
+    "items":[
+        {
+            "id":"46",
+            "amount": 1
+        }
+    ],
+    "date": "2000/03/12"
 }
 
 ```
@@ -268,18 +466,47 @@ Posibles respuestas
 - `200 OK `
 ```json
 {
-  "message": "Compra realizada"
+    "mensaje": "Se creo el comprobante con exito",
+    "url": "http://localhost:3000/checkout/43"
 }
 ```
-
+DeactivatedEntity
 - `400 Bad Request `
+```json
+{
+    "mensaje": "El usuario/libro ingresado esta desactivado"
+}
+```
+NotFoundError
+- `404 Not Found `
+```json
+{
+    "mensaje": "Id de usuario invalido"
+}
+{
+    "mensaje": "Libro no encontrado"
+}
+```
+OutOfStock
+- `400 Bad Request `
+```json
+{
+    "mensaje": "El libro (book.name) no tiene suficiente stock"
+}
+```
+- `500 Internal server error `
+```json
+{
+  "message": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
+}
+```
 
 Depende de cual validacion rompio.
 
 ##### Eliminar compra
 
 ```http
-DELETE /api/v1/checkout/buy?buyId=buyId
+DELETE /checkout/id
 
 
 ```
@@ -288,7 +515,15 @@ Posibles respuestas
 - `200 OK `
 ```json
 {
-  "message": "Se elimino la compra"
+    "mensaje": "Se elimino el comprobante con exito",
+    "libro": [
+        {
+            "id": 43,
+            "id_user": 50,
+            "date": "2001-09-12T03:00:00.000Z",
+            "totalPrice": 1
+        }
+    ]
 }
 ```
 
@@ -296,33 +531,138 @@ Posibles respuestas
 
 ```json
 {
-  "message": "El id de la compra que quiere eliminar no existe"
+    "mensaje": "Id del comprobante invalido"
 }
 ```
 
+- `500 Internal server error `
+```json
+{
+  "message": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
+}
+```
 
 ##### Mostrar compra
 
 ```http
-GET /api/v1/book?userId=userId&bookId=bookId&date=date
+GET /checkout
 ```
 Posibles respuestas
 
 - `200 OK `
 
 ```json
+[
+    {
+        "id": 43,
+        "id_user": 50,
+        "date": "2001-09-12T03:00:00.000Z",
+        "totalPrice": 1,
+        "items": [
+            {
+                "id": 46,
+                "name": "test",
+                "author": "testAuthor",
+                "price": 1
+            }
+        ]
+    }
+]
+```
+- `500 Internal server error `
+```json
 {
-"checkouts":[{
-  "userId": "Example"
-  "checkout":[{
-      "bookId": "Example"
-      "ammount": "1"
-  }],
-  "totalPrice": 123,
-  "date": "01/01/2001"
-}]
+  "message": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
+}
+```
+##### Mostrar compra por id
+
+```http
+GET /checkout/id
+```
+Posibles respuestas
+
+- `200 OK `
+
+```json
+[
+    {
+        "id": 43,
+        "id_user": 50,
+        "date": "2001-09-12T03:00:00.000Z",
+        "totalPrice": 1,
+        "items": [
+            {
+                "id": 46,
+                "name": "test",
+                "author": "testAuthor",
+                "price": 1
+            }
+        ]
+    }
+]
+```
+NotFoundError
+
+- `404 Not Found `
+```json
+{
+    "mensaje": "Id del comprobante invalido"
+}
+```
+```
+- `500 Internal server error `
+```json
+{
+  "message": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
 }
 ```
 
+##### Editar compra
 
+```http
+PUT /checkout/id
 
+{
+    "idUser":50,
+    "date": "2001/09/12"
+}
+
+```
+Posibles respuestas
+
+- `200 OK `
+```json
+{
+    "mensaje": "Se modifico el usuario con exito",
+    "checkout": {
+        "id": 43,
+        "id_user": 50,
+        "date": "2001-09-12T03:00:00.000Z",
+        "totalPrice": 1
+    }
+}
+```
+DeactivatedEntity
+- `400 Bad Request `
+```json
+{
+    "mensaje": "El usuario/libro ingresado esta desactivado"
+}
+```
+NotFoundError
+- `404 Not Found `
+```json
+{
+    "mensaje": "Id del comprobante invalido"
+}
+{
+    "mensaje": "Usuario no encontrado"
+}
+```
+- `500 Internal server error `
+```json
+{
+  "message": "Ocurrio un error inesperado. Vuelva a intentarlo mas tarde"
+}
+```
