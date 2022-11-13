@@ -60,6 +60,9 @@ const modifyUser = async function(req,res, next){
             if(err instanceof NotFoundError){
                 res.status(404).json({mensaje: err.message});
             }
+            else if(err instanceof AlreadyCreatedEntity){
+                res.status(400).json({mensaje: err.message});
+            }
             else{
                 res.status(500).json({mensaje: err.message});
             }

@@ -54,6 +54,12 @@ const getUserById = async function(id){
 }
 const modifyUser = async function(user){
     const users = await userRepository.getUserById(user.id);
+    const userAlreadyRegistred = await userRepository.getUserByName(user.name);
+    console.log(users)
+    console.log(userAlreadyRegistred)
+    if(userAlreadyRegistred.length != 0){
+        throw new AlreadyCreatedEntity('Ya existe un usuario con ese nombre');
+    }
     if(users.length != 0){
         user.id= users[0].id;
         await userRepository.modifyUser(user);

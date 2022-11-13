@@ -48,6 +48,10 @@ const getBookById = async function(id){
 }
 const modifyBook = async function(book){
     const books = await bookRepository.getBookById(book.id);
+    const booksByName = await bookRepository.getBookByName(book.name);
+    if(booksByName.length != 0){
+        throw new AlreadyCreatedEntity('Ya existe un libro con ese nombre');
+    }
     if(books.length != 0){
         book.id = books[0].id;
         await bookRepository.modifyBook(book);
