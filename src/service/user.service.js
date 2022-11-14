@@ -78,11 +78,11 @@ const deleteUser = async function(id){
     if(user.length != 0){
         const checkUserInCheckout = await checkoutRepository.getCheckoutByUserId(id);
         if(checkUserInCheckout.length == 0){
-            if(user.isActive == 1){
-                user.isActive = true;
+            if(user[0].isActive == 1){
+                user[0].isActive = true;
             }
             else{
-                user.isActive = false;
+                user[0].isActive = false;
             }
             await userRepository.deleteUser(id);
             const respuesta = {
