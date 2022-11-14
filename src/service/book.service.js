@@ -70,6 +70,12 @@ const deleteBook = async function(id){
     if(book.length != 0){
         const checkUserInCheckout = await checkoutRepository.getCheckoutByBookId(id);
         if(checkUserInCheckout.length == 0){
+            if(book[0].isForSale == 1){
+                book[0].isForSale = true;
+            }
+            else{
+                book[0].isForSale = false;
+            }
             await bookRepository.deleteBook(id);
             const respuesta = {
                 mensaje: 'Se elimino el libro con exito',

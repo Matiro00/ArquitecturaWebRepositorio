@@ -78,6 +78,12 @@ const deleteUser = async function(id){
     if(user.length != 0){
         const checkUserInCheckout = await checkoutRepository.getCheckoutByUserId(id);
         if(checkUserInCheckout.length == 0){
+            if(user.isActive == 1){
+                user.isActive = true;
+            }
+            else{
+                user.isActive = false;
+            }
             await userRepository.deleteUser(id);
             const respuesta = {
                 mensaje: 'Se elimino el usuario con exito',
