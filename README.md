@@ -9,6 +9,13 @@ Para ello el usuario se tendra que logear y elegir los libros que quiera comprar
 
 La compra de libros esta limitada al stock que se tenga del mismo. El mismo no requiere un metodo de pago solo el mail del usuario en el cual se le enviara 
 
+### Como usarlo?
+
+Se necesita node js y xampp 
+
+- npm i
+- npm start
+
 ### Endpoints
 
 #### Usuario 🙂
